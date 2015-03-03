@@ -18,3 +18,12 @@ apache_conf 'php-handler' do
   cookbook node['rackspace_apache_php']['php_handler']['cookbook']
   enable node['rackspace_apache_php']['php_handler']['enable']
 end
+
+# TODO 
+# All the logic to set the correct PHP version / Package / Repo 
+# Like this fa2be8a5601b4e3a7d3ab2553098300da754efc3
+# * correct repo
+# * correct downgrade if required
+# * change package name if required
+# * change php-fpm package name if required
+# * downgrade / upgrade Apache if required
