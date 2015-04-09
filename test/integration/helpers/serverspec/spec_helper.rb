@@ -3,6 +3,8 @@ require 'serverspec'
 require 'net/http'
 require 'openssl'
 
+require_relative 'php_examples'
+
 set :backend, :exec
 set :path, '/sbin:/usr/local/sbin:/bin:/usr/bin:$PATH'
 
@@ -39,7 +41,7 @@ def family_value(str)
   elsif os[:family] == 'ubuntu' && os[:release] == '14.04'
     ubuntu_trusty_family_values[str]
   else
-    debian_family_values
+    debian_family_values[str]
   end
 end
 

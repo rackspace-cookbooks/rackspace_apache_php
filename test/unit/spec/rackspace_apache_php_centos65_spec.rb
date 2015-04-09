@@ -26,6 +26,7 @@ describe 'rackspace_apache_php_test::default on Centos 6.5' do
     it_behaves_like 'Apache2'
     it_behaves_like 'Apache2 PHP handler', 'centos', '2.2'
     it_behaves_like 'PHP-FPM'
+    it_behaves_like 'Yum IUS repo'
   end
   context 'Apache 2.4' do
     cached(:chef_run) do
@@ -36,5 +37,6 @@ describe 'rackspace_apache_php_test::default on Centos 6.5' do
     it_behaves_like 'Apache2'
     it_behaves_like 'Apache2 PHP handler', 'centos', '2.4'
     it_behaves_like 'PHP-FPM'
+    it_behaves_like 'Yum IUS repo'
   end
 end

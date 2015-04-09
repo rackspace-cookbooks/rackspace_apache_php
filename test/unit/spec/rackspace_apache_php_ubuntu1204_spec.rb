@@ -26,6 +26,7 @@ describe 'rackspace_apache_php_test::default on Ubuntu 12.04' do
     it_behaves_like 'Apache2'
     it_behaves_like 'Apache2 PHP handler', 'ubuntu', '2.2'
     it_behaves_like 'PHP-FPM'
+    it_behaves_like 'APT php repo', 5.6
   end
   context 'Apache 2.4' do
     cached(:chef_run) do
@@ -36,5 +37,6 @@ describe 'rackspace_apache_php_test::default on Ubuntu 12.04' do
     it_behaves_like 'Apache2'
     it_behaves_like 'Apache2 PHP handler', 'ubuntu', '2.4'
     it_behaves_like 'PHP-FPM'
+    it_behaves_like 'APT php repo', 5.6
   end
 end

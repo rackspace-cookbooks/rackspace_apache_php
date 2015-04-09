@@ -6,7 +6,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: centos-6.5
+  - name: centos-6.6
     run_list:
     - recipe[yum]
   - name: ubuntu-12.04
@@ -20,3 +20,21 @@ suites:
   - name: default
     run_list:
       - recipe[rackspace_apache_php_test::default]
+  - name: php54
+    run_list:
+      - recipe[rackspace_apache_php_test::default]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.4'
+  - name: php55
+    run_list:
+      - recipe[rackspace_apache_php_test::default]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.5'
+  - name: php56
+    run_list:
+      - recipe[rackspace_apache_php_test::default]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.6'

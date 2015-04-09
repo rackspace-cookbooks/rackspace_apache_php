@@ -36,3 +36,18 @@ shared_examples_for 'PHP-FPM' do
     expect(chef_run).to include_recipe('php-fpm::default')
   end
 end
+
+shared_examples_for 'Yum IUS repo' do
+  it 'configures the appropriate repository' do
+    expect(chef_run).to include_recipe('yum-ius')
+  end
+end
+
+shared_examples_for 'APT php repo' do |version|
+  it 'configures the appropriate repository' do
+    expect(chef_run).to add_apt_repository("php-#{version}")
+  end
+  it 'disables Apache install from ondrej repos' do
+    expect(chef_run).to add_apt_preference('apache')
+  end
+end
