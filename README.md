@@ -7,7 +7,7 @@ It relies on [apache2 cookbook](https://github.com/svanzoest-cookbooks/apache2/)
 
 * Centos 6.5
 * Ubuntu 12.04
-* Ubuntu 14.04
+* Ubuntu 14.04 [(only PHP 5.5 and 5.6)](https://github.com/oerdnj/deb.sury.org/issues/58#issuecomment-92246112)
 
 ## Attributes
 

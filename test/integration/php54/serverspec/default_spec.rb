@@ -28,6 +28,11 @@ end
 
 # PHP
 describe 'PHP configuration' do
-  it_behaves_like 'php under apache', 5.4
+  if os[:family] == 'ubuntu' && os[:release] == '14.04'
+    # PHP 5.4 is not supported on Ubuntu Trusty
+    it_behaves_like 'php under apache', 5.5
+  else
+    it_behaves_like 'php under apache', 5.4
+  end
   it_behaves_like 'php-fpm'
 end
