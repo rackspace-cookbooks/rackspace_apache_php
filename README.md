@@ -63,7 +63,7 @@ Virtual Host are not managed by this cookbook, the configuration provided by thi
 #### Apache and PHP 5.5
 
 ```
-node.default['rackspace_apache_php']['php_handler']['enable'] = '5.5'
+node.default['rackspace_apache_php']['php_version'] = '5.5'
 include_recipe 'rackspace_apache_php::default'
 ```
 
