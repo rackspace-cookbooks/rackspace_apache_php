@@ -22,3 +22,9 @@ shared_examples_for 'php-fpm' do
     it { should be_running }
   end
 end
+
+shared_examples_for 'php' do |version|
+  describe command('php -v') do
+    its(:stdout) { should match(/PHP #{version}/) }
+  end
+end
