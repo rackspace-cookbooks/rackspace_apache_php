@@ -1,7 +1,9 @@
 # rackspace_apache_php-cookbook
 
 A cookbook to provide a web server able to serve php pages with Apache and PHP fpm.
-It relies on [apache2 cookbook](https://github.com/svanzoest-cookbooks/apache2/) and [php-fpm](https://github.com/yevgenko/cookbook-php-fpm). Those cookbooks are pinned on wll know working minor version to prevent breaking changes. 
+It relies on [apache2 cookbook](https://github.com/svanzoest-cookbooks/apache2/) and [php-fpm](https://github.com/yevgenko/cookbook-php-fpm). Those cookbooks are pinned on well known working minor version to prevent breaking changes.
+In addition (even if this is not a requirement), the cookbook will install php packages through [PHP cookbook](https://github.com/opscode-cookbooks/php). Indeed most of the time you will need `php::default` in your role which will conflict with the `php-fpm` package if they are different.
+You can disable the installation of php packages with `node['rackspace_apache_php']['php_packages_install']['enable']`.
 
 ## Supported Platforms
 
@@ -40,8 +42,8 @@ run_list(
 )
 ```
 
-You can change any of the `apache2` and `php-fpm` cookbook attributes to tune rackspace_apache_php configuration.
-However you should not change `['php-fpm']['package_name']` or `['php-fpm']['service_name']` (as they are part of this cookbook logic) without checking it works.
+You can change any of the `apache2`,`php-fpm` and `php` cookbook attributes to tune rackspace_apache_php configuration.
+However you should not change `['php-fpm']['package_name']`,`['php-fpm']['service_name']` or `['php']['packages']` (as they are part of this cookbook logic) without checking it works.
 
 ## In scope
 
@@ -51,19 +53,21 @@ More in details it :
 
 * Installs and configure Apache2 web server
 * Installs and configure php-fpm
+* Installs and configure php
 * Configures Apache2 to serve php pages through php-fpm (in conf.d)
 * gets the correct packages and change the configuration according to the php/apache version 
 
 ## Out of scope
 
-Virtual Host are not managed by this cookbook, the configuration provided by this cookbook should not prevent users to extend php-fpm configuration. As many features as possible should have a flag to enable/disable them, it will allow to enjoy some parts of the work done by the library (get the correct packages by example) but still be able to configure your own php-fpm pools.
+Virtual Host are not managed by this cookbook, the configuration provided by this cookbook should not prevent users to extend php or php-fpm configuration. 
+As many features as possible should have a flag to enable/disable them, it will allow to enjoy some parts of the work done by this cookbook (get the correct packages by example) but still be able to configure your own php-fpm pools.
 
 
 ### Examples
 #### Apache and PHP 5.5
 
 ```
-node.default['rackspace_apache_php']['php_handler']['enable'] = '5.5'
+node.default['rackspace_apache_php']['php_version'] = '5.5'
 include_recipe 'rackspace_apache_php::default'
 ```
 
@@ -94,6 +98,7 @@ end
 
 * [Apache2 cookbook](https://github.com/svanzoest-cookbooks/apache2)
 * [PHP-fpm cookbook](https://github.com/yevgenko/cookbook-php-fpm)
+* [PHP cookbook](https://github.com/opscode-cookbooks/php)
 
 
 ## Contributing

@@ -29,5 +29,6 @@ end
 # PHP
 describe 'PHP configuration' do
   it_behaves_like 'php under apache', 5.6
+  it_behaves_like 'php', 5.6
   it_behaves_like 'php-fpm'
 end
