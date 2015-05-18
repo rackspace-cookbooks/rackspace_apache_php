@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/rackspace-cookbooks/rackspace_apache_php.svg?style=svg)](https://circleci.com/gh/rackspace-cookbooks/rackspace_apache_php)
+
 # rackspace_apache_php-cookbook
 
 A cookbook to provide a web server able to serve php pages with Apache and PHP fpm.
@@ -13,10 +15,10 @@ You can disable the installation of php packages with `node['rackspace_apache_ph
 
 ## Attributes
 
-`node['rackspace_apache_php']['php_version']` : Which PHP version to install, default to PHP 5.6
-`node['rackspace_apache_php']['php_handler']['enable']` : Should it enable Apache PHP handler (applied in "conf.d", so it will be available in EVERY vhost, if you want to manage your own handler configuration, set this attribute to false)
-`node['rackspace_apache_php']['php_handler']['cookbook']` : Where to find the handler configuration , default to `rackspace_apache_php cookbook`
-`node['rackspace_apache_php']['php_handler']['template']` : Where to find the handler configuration , default to `php-handler.conf.erb`
+* `node['rackspace_apache_php']['php_version']` : Which PHP version to install, default to PHP 5.6
+* `node['rackspace_apache_php']['php_handler']['enable']` : Should it enable Apache PHP handler (applied in "conf.d", so it will be available in EVERY vhost, if you want to manage your own handler configuration, set this attribute to false)
+* `node['rackspace_apache_php']['php_handler']['cookbook']` : Where to find the handler configuration , default to `rackspace_apache_php cookbook`
+* `node['rackspace_apache_php']['php_handler']['template']` : Where to find the handler configuration , default to `php-handler.conf.erb`
 
 ## Usage
 
@@ -43,7 +45,7 @@ run_list(
 ```
 
 You can change any of the `apache2`,`php-fpm` and `php` cookbook attributes to tune rackspace_apache_php configuration.
-However you should not change `['php-fpm']['package_name']`,`['php-fpm']['service_name']` or `['php']['packages']` (as they are part of this cookbook logic) without checking it works.
+** However you should not change ** `['php-fpm']['package_name']`,`['php-fpm']['service_name']` or `['php']['packages']` (as they are part of this cookbook logic) without checking it works.
 
 ## In scope
 
