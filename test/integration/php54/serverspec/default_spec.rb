@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'platform_helper'
 
 # Apache
 describe service(apache_service_name) do
