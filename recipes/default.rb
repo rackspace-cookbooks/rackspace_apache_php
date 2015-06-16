@@ -97,7 +97,6 @@ include_recipe 'php-fpm::default'
 # PHP
 # Set the correct php packages to install
 if node['rackspace_apache_php']['php_packages_install']['enable']
-  Chef::Log.info 'XXXX installs XXXX'
   node.default['php']['packages'] = php_fpm[node['platform_family']][node['rackspace_apache_php']['php_version']]['php_packages']
   include_recipe 'php::default'
   # Emptying php packages, to be sure if another cookbook tries to include php::default it
