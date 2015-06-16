@@ -4,9 +4,6 @@ driver:
 
 provisioner:
   name: chef_zero
-  attributes:
-    apache:
-      default_site_enabled: true # we need this for the tests to work
 
 platforms:
   - name: centos-6.6
