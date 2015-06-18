@@ -1,5 +1,12 @@
 # Encoding: utf-8
 require 'serverspec'
+require 'net/http'
+require 'openssl'
+
+require 'platform_helper'
+require 'apache_helper'
+require 'php_fpm_helper'
+require 'php_helper'
 
 set :backend, :exec
 
