@@ -6,14 +6,14 @@ shared_examples_for 'Apache2' do
   end
 end
 
-shared_examples_for 'Apache2 PHP handler' do |distro, apache_version|
+shared_examples_for 'Apache2 PHP handler' do |distro, apache_version, suite|
   conf_d_path = %w( centos ).include?(distro) ? '/etc/httpd/conf-available' : '/etc/apache2/conf-available'
   it 'configures Apache2 to handle PHP with php-fpm' do
     [
       'AddHandler php5-fcgi .php',
       'Action php5-fcgi /php5-fcgi',
       'Alias /php5-fcgi /var/run/php5-fcgi',
-      'FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-www.sock -flush -idle-timeout 1800'
+      "FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-#{suite}.sock -flush -idle-timeout 1800"
     ].each do |line|
       expect(chef_run).to render_file("#{conf_d_path}/php-handler.conf").with_content(line)
     end
@@ -31,9 +31,19 @@ shared_examples_for 'Apache2 PHP handler' do |distro, apache_version|
   end
 end
 
-shared_examples_for 'PHP-FPM' do
+shared_examples_for 'PHP-FPM' do |platform, suite|
   it 'includes php-fpm default recipe' do
     expect(chef_run).to include_recipe('php-fpm::default')
+  end
+  it 'creates the default php-fpm pool' do
+    # We cannot test the php_fpm_pool as it is a definition not a resource
+    if platform == 'redhat'
+      expect(chef_run).to render_file("/etc/php-fpm.d/#{suite}.conf")
+    elsif platform == 'ubuntu'
+      expect(chef_run).to render_file("/etc/php5/fpm/pool.d/#{suite}.conf")
+    else
+      expect(chef_run).to render_file("/etc/php5/fpm/pool.d/#{suite}.conf")
+    end
   end
 end
 
