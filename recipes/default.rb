@@ -94,6 +94,11 @@ node.default['php-fpm']['package_name'] = php_fpm[node['platform_family']][node[
 node.default['php-fpm']['service_name'] = php_fpm[node['platform_family']][node['rackspace_apache_php']['php_version']]['service']
 include_recipe 'php-fpm::default'
 
+# Create (or not) our default pool
+php_fpm_pool 'default' do
+  enable node['rackspace_apache_php']['php-fpm']['default_pool']['enable']
+end
+
 # PHP
 # Set the correct php packages to install
 if node['rackspace_apache_php']['php_packages_install']['enable']
