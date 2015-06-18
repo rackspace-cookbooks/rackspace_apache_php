@@ -9,13 +9,14 @@ You can disable the installation of php packages with `node['rackspace_apache_ph
 
 ## Supported Platforms
 
-* Centos 6.5
+* Centos 6.6
 * Ubuntu 12.04
 * Ubuntu 14.04 [(only PHP 5.5 and 5.6)](https://github.com/oerdnj/deb.sury.org/issues/58#issuecomment-92246112)
 
 ## Attributes
 
 * `node['rackspace_apache_php']['php_version']` : Which PHP version to install, default to PHP 5.6
+* `node['rackspace_apache_php']['php-fpm']['default_pool']['enable']` : Should it enable a default PHP-FPM pool which listens on a unix socket, defaults to 'true' (change it to false if you want to manage your own PHP-FPM pools)
 * `node['rackspace_apache_php']['php_handler']['enable']` : Should it enable Apache PHP handler (applied in "conf.d", so it will be available in EVERY vhost, if you want to manage your own handler configuration, set this attribute to false)
 * `node['rackspace_apache_php']['php_handler']['cookbook']` : Where to find the handler configuration , default to `rackspace_apache_php cookbook`
 * `node['rackspace_apache_php']['php_handler']['template']` : Where to find the handler configuration , default to `php-handler.conf.erb`
@@ -57,7 +58,7 @@ More in details it :
 * Installs and configure php-fpm
 * Installs and configure php
 * Configures Apache2 to serve php pages through php-fpm (in conf.d)
-* gets the correct packages and change the configuration according to the php/apache version 
+* Gets the correct packages and change the configuration according to the php/apache version 
 
 ## Out of scope
 
@@ -79,19 +80,39 @@ include_recipe 'rackspace_apache_php::default'
 include_recipe 'rackspace_apache_php::default'
 ```
 
-#### Apache and PHP 5.6 without default PHP handler
+#### Apache and PHP 5.6 without default PHP handler and default PHP-FPM pool
 
 You will have to add your own Vhost to configure the handler, here is an example using a `web_app` attribute to pass php-fpm default socket.
  
 ```
+node.default['rackspace_apache_php']['php_handler']['enable'] = false
+node.default['rackspace_apache_php']['php-fpm']['default_pool']['enable'] = false
+
+# Create a php-fpm pool through the attribute exposed from upstream
+node.default['php-fpm']['pools'] = {
+  override: {
+    enable: 'true',
+    process_manager: 'dynamic',
+    max_requests: 5000
+  }
+}
+
 include_recipe 'rackspace_apache_php::default'
 
+# Create your own php-handler 
+apache_conf 'my-php-handler' do
+  source 'my-php-handler.conf.erb'
+  cookbook 'my-cookbook'
+  enable true
+end
+
+# Create a virtual host to serve pages
 web_app "my_site" do
   server_name node['hostname']
   server_aliases [node['fqdn'], "my-site.example.com"]
   docroot "/srv/www/my_site"
-  cookbook 'mycookbook'
-  php_socket '/var/run/php-fpm-www.sock'
+  cookbook 'my-cookbook'
+  php_socket '/var/run/php-fpm-override.sock'
 end
 
 ```
@@ -114,4 +135,4 @@ end
 
 ## License and Authors
 
-Author:: Julien Berard (julien.berard@rackspace.com)
+Author:: Julien Berard (julien.berard@rackspace.co.uk), Kostas Georgakopoulos (kostas.georgakopoulos@rackspace.co.uk)

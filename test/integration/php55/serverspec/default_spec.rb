@@ -1,35 +1,14 @@
 require 'spec_helper'
-require 'platform_helper'
 
-# Apache
-describe service(apache_service_name) do
-  it { should be_enabled }
-  it { should be_running }
+describe 'apache tests' do
+  it_behaves_like 'apache', :default # param denotes the suite under test
 end
 
-describe port(80) do
-  it { should be_listening }
+describe 'php-fpm tests' do
+  it_behaves_like 'php-fpm', :default, :override # params denote 'enabled suite' and 'disabled suite'
 end
 
-## test modules
-%w( actions fastcgi ).each do |mod|
-  describe command("#{apache2ctl} -M") do
-    its(:stdout) { should match(/^ #{mod}_module/) }
-  end
-end
-
-## test configuration syntax
-describe command("#{apache2ctl} -t") do
-  its(:exit_status) { should eq 0 }
-end
-
-describe file(docroot) do
-  it { should be_directory }
-end
-
-# PHP
-describe 'PHP configuration' do
-  it_behaves_like 'php under apache', 5.5
+describe 'php tests' do
+  it_behaves_like 'php under apache', 5.5, :default
   it_behaves_like 'php', 5.5
-  it_behaves_like 'php-fpm'
 end

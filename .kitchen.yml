@@ -23,9 +23,18 @@ suites:
   - name: default
     run_list:
       - recipe[rackspace_apache_php_test::default]
+  - name: default_override
+    run_list:
+      - recipe[rackspace_apache_php_test::override]
   - name: php54
     run_list:
       - recipe[rackspace_apache_php_test::default]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.4'
+  - name: php54_override
+    run_list:
+      - recipe[rackspace_apache_php_test::override]
     attributes:
       rackspace_apache_php:
         php_version: '5.4'
@@ -35,9 +44,21 @@ suites:
     attributes:
       rackspace_apache_php:
         php_version: '5.5'
+  - name: php55_override
+    run_list:
+      - recipe[rackspace_apache_php_test::override]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.5'
   - name: php56
     run_list:
       - recipe[rackspace_apache_php_test::default]
+    attributes:
+      rackspace_apache_php:
+        php_version: '5.6'
+  - name: php56_override
+    run_list:
+      - recipe[rackspace_apache_php_test::override]
     attributes:
       rackspace_apache_php:
         php_version: '5.6'
