@@ -1,6 +1,10 @@
 rackspace_apache_php CHANGELOG
 ==================
 
+0.1.1
+-----
+- Corrections and clean up on tests
+
 0.1.0
 -----
 - Added feature to enable/disable a default php-fpm pool
