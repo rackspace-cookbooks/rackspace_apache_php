@@ -2,13 +2,14 @@
 set :backend, :exec
 set :path, '/sbin:/usr/local/sbin:/bin:/usr/bin:$PATH'
 
-def test_data
+def helper_data
   # Define the data we need to test every suite per platform and release
   # An attribute specific to a release but different across suites should go into >Family>Release>Suite>Attribute
   # An attribute specific to a release but common across suites should go into >Family>Release>Common>Attribute
   # An attribute common across releases but different across suites should go into >Family>Common>Suite>Attribute
   # An attribute common across releases and suites should go into >Family>Common>Attribute
-  # An attribute common across releases, suites and platforms should go into >Common>Attribute
+  # An attribute common across releases and platforms but different across suites should go into >Common>Suite>Attribute
+  # An attribute common across releases, platforms and suites should go into >Common>Attribute
 
   data = {
     redhat: {
@@ -21,13 +22,14 @@ def test_data
           default_pool:         '/etc/php-fpm.d/override.conf',
           fpm_socket:           '/var/run/php-fpm-override.sock'
         },
-        common: {}
+        common: {
+          docroot:                '/var/www/html',
+          apache_service_name:    'httpd',
+          fpm_service_name:       'php-fpm',
+          apache2ctl:             '/usr/sbin/apachectl'
+        }
       },
       common: {
-        docroot:                '/var/www/html',
-        apache_service_name:    'httpd',
-        fpm_service_name:       'php-fpm',
-        apache2ctl:             '/usr/sbin/apachectl',
         default: {},
         override: {}
       }
@@ -61,24 +63,28 @@ def test_data
         }
       }
     },
-    common: {}
+    common: {
+      default: {},
+      override: {}
+    }
   }
   data
 end
 
-def get_test_data_value(suite, attribute)
+def get_helper_data_value(suite, attribute)
   # Return the attribute requested for this suite from most specific to less specific
-
   # >Family>Release>Suite>Attribute
-  return test_data[os[:family].to_sym][os[:release]][suite][attribute] unless test_data[os[:family].to_sym][os[:release]][suite][attribute].nil?
+  return helper_data[os[:family].to_sym][os[:release]][suite][attribute] unless helper_data[os[:family].to_sym][os[:release]][suite][attribute].nil?
   # >Family>Release>Common>Attribute
-  return test_data[os[:family].to_sym][os[:release]][:common][attribute] unless test_data[os[:family].to_sym][os[:release]][:common][attribute].nil?
+  return helper_data[os[:family].to_sym][os[:release]][:common][attribute] unless helper_data[os[:family].to_sym][os[:release]][:common][attribute].nil?
   # >Family>Common>Suite>Attribute
-  return test_data[os[:family].to_sym][:common][suite][attribute] unless test_data[os[:family].to_sym][:common][suite][attribute].nil?
+  return helper_data[os[:family].to_sym][:common][suite][attribute] unless helper_data[os[:family].to_sym][:common][suite][attribute].nil?
   # >Family>Common>Attribute
-  return test_data[os[:family].to_sym][:common][attribute] unless test_data[os[:family].to_sym][:common][attribute].nil?
+  return helper_data[os[:family].to_sym][:common][attribute] unless helper_data[os[:family].to_sym][:common][attribute].nil?
+  # >Common>Suite>Attribute
+  return helper_data[:common][suite][attribute] unless helper_data[:common][suite][attribute].nil?
   # >Common>Attribute
-  return test_data[:common][attribute] unless test_data[:common][attribute].nil?
+  return helper_data[:common][attribute] unless helper_data[:common][attribute].nil?
 end
 
 def page_returns(url = 'http://localhost:80/', host = 'localhost', ssl = false)
