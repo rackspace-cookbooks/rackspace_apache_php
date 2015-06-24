@@ -9,7 +9,13 @@ include_recipe 'chef-sugar'
 
 # APACHE
 include_recipe 'apache2::mod_actions'
-include_recipe 'apache2::mod_fastcgi'
+include_recipe 'apache2::mod_fastcgi' unless ubuntu_trusty? # On Ubuntu 14.04 we are going to use mod_proxy_fcgi which is bundled with Apache 2.4
+
+if ubuntu_trusty? # The required modules for Trusty are installed along with Apache 2.4 but not enabled by default
+  %w('proxy' 'proxy_fcgi').each do |mod|
+    apache_module mod
+  end
+end
 
 apache_conf 'php-handler' do
   source node['rackspace_apache_php']['php_handler']['template']
@@ -95,7 +101,10 @@ node.default['php-fpm']['service_name'] = php_fpm[node['platform_family']][node[
 include_recipe 'php-fpm::default'
 
 # Create (or not) our default pool
+# On Trusty we use mod_proxy_fcgi and we need Apache > 2.4.9 to use sockets (only available from ondrej which we don't use for Apache)
+listen_on = ubuntu_trusty? ? '127.0.0.1:9000' : '/var/run/php-fpm-default.sock'
 php_fpm_pool 'default' do
+  listen listen_on
   enable node['rackspace_apache_php']['php-fpm']['default_pool']['enable']
 end
 

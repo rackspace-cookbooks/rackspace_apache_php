@@ -5,12 +5,22 @@ shared_examples_for 'php-fpm' do |enabled_suite, disabled_suite|
     it { should be_running }
   end
 
-  describe file(get_helper_data_value(enabled_suite, :fpm_socket)) do
-    it { should be_socket }
-  end
+  if os[:family] == 'ubuntu' && os[:release] == '14.04' # On Trusty we need to check a TCP/IP socket
+    describe port(get_helper_data_value(enabled_suite, :fpm_port)) do
+      it { should be_listening }
+    end
 
-  describe file(get_helper_data_value(disabled_suite, :fpm_socket)) do
-    it { should_not be_socket }
+    describe port(get_helper_data_value(disabled_suite, :fpm_port)) do
+      it { should_not be_listening }
+    end
+  else
+    describe file(get_helper_data_value(enabled_suite, :fpm_socket)) do
+      it { should be_socket }
+    end
+
+    describe file(get_helper_data_value(disabled_suite, :fpm_socket)) do
+      it { should_not be_socket }
+    end
   end
 
   # Pool tests

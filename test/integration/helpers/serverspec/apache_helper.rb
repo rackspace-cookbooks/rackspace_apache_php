@@ -15,7 +15,7 @@ shared_examples_for 'apache' do |suite|
   end
 
   # Test modules
-  %w( actions fastcgi ).each do |mod|
+  get_helper_data_value(suite, :modules).each do |mod|
     describe command("#{get_helper_data_value(suite, :apache2ctl)} -M") do
       its(:stdout) { should match(/^ #{mod}_module/) }
     end

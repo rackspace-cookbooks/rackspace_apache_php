@@ -83,7 +83,7 @@ include_recipe 'rackspace_apache_php::default'
 #### Apache and PHP 5.6 without default PHP handler and default PHP-FPM pool
 
 You will have to add your own Vhost to configure the handler, here is an example using a `web_app` attribute to pass php-fpm default socket.
- 
+
 ```
 node.default['rackspace_apache_php']['php_handler']['enable'] = false
 node.default['rackspace_apache_php']['php-fpm']['default_pool']['enable'] = false
