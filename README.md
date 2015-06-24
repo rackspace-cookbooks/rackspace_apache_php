@@ -82,7 +82,7 @@ include_recipe 'rackspace_apache_php::default'
 
 #### Apache and PHP 5.6 without default PHP handler and default PHP-FPM pool
 
-You will have to add your own Vhost to configure the handler, here is an example using a `web_app` attribute to pass php-fpm default socket.
+You will have to add your own Vhost to configure the handler, here is an example using a `web_app` resource and the `apache_conf` definition from the upstream apache2 cookbook to create a virtual host and the Apache configuration necessary to handle php requests (templates not provided). It also leverages the `['php-fpm']['pools']` attribute from the upstream php-fpm cookbook to create a custom defined php-fpm pool listening on a socket. Although not provided below, the templates for the `apache_conf` definition and the `web_app` resource should contain the necessary directives to pass requestes for php files to the php-fpm pool.
 
 ```
 node.default['rackspace_apache_php']['php_handler']['enable'] = false

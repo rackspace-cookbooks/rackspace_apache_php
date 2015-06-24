@@ -1,6 +1,10 @@
 rackspace_apache_php CHANGELOG
 ==================
 
+0.2.0
+-----
+- Added support for mod_proxy_fgi when using Apache 2.4
+
 0.1.1
 -----
 - Corrections and clean up on tests
