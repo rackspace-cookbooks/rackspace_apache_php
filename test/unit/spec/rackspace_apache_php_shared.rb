@@ -1,29 +1,35 @@
-shared_examples_for 'Apache2' do
+shared_examples_for 'Apache2' do |distro, version|
   it 'includes apache2 required recipes' do
     expect(chef_run).to include_recipe('apache2::default')
-    expect(chef_run).to include_recipe('apache2::mod_fastcgi')
     expect(chef_run).to include_recipe('apache2::mod_actions')
+    unless distro == 'ubuntu' && version == '14.04'
+      expect(chef_run).to include_recipe('apache2::mod_fastcgi')
+    end
   end
 end
 
-shared_examples_for 'Apache2 PHP handler' do |distro, apache_version, suite|
+shared_examples_for 'Apache2 PHP handler' do |distro, apache_version, suite, port|
   conf_d_path = %w( centos ).include?(distro) ? '/etc/httpd/conf-available' : '/etc/apache2/conf-available'
-  it 'configures Apache2 to handle PHP with php-fpm' do
-    [
-      'AddHandler php5-fcgi .php',
-      'Action php5-fcgi /php5-fcgi',
-      'Alias /php5-fcgi /var/run/php5-fcgi',
-      "FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-#{suite}.sock -flush -idle-timeout 1800"
-    ].each do |line|
-      expect(chef_run).to render_file("#{conf_d_path}/php-handler.conf").with_content(line)
-    end
-  end
-  if apache_version == '2.4'
-    it 'sets the approriate Apache 2.4 configuration' do
+  if apache_version == '2.2'
+    it 'configures Apache 2.2 to handle php requests with php-fpm using mod_fastcgi' do
       [
-        '<Directory /var/run>',
-        'Require all granted',
-        '</Directory>'
+        '<IfModule mod_fastcgi.c>',
+        'AddHandler php5-fcgi .php',
+        'Action php5-fcgi /php5-fcgi',
+        'Alias /php5-fcgi /var/run/php5-fcgi',
+        "FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-#{suite}.sock -flush -idle-timeout 1800",
+        '</IfModule>'
+      ].each do |line|
+        expect(chef_run).to render_file("#{conf_d_path}/php-handler.conf").with_content(line)
+      end
+    end
+  else
+    it 'configures Apache 2.4 to handle php requests with php-fpm using mod_proxy_fcgi' do
+      [
+        '<IfModule mod_proxy_fcgi.c>',
+        "ProxyPassMatch ^/(.*\\.php(/.*)?)$ fcgi://127.0.0.1:#{port}/var/www/html/$1",
+        'DirectoryIndex /index.php index.php',
+        '</IfModule>'
       ].each do |line|
         expect(chef_run).to render_file("#{conf_d_path}/php-handler.conf").with_content(line)
       end

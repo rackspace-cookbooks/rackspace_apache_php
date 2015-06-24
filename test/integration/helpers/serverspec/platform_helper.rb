@@ -26,7 +26,8 @@ def helper_data
           docroot:                '/var/www/html',
           apache_service_name:    'httpd',
           fpm_service_name:       'php-fpm',
-          apache2ctl:             '/usr/sbin/apachectl'
+          apache2ctl:             '/usr/sbin/apachectl',
+          modules:                ['actions', 'fastcgi']
         }
       },
       common: {
@@ -36,17 +37,27 @@ def helper_data
     },
     ubuntu: {
       '12.04' => {
-        default: {},
-        override: {},
+        default: {
+          fpm_socket:           '/var/run/php-fpm-default.sock'
+        },
+        override: {
+          fpm_socket:           '/var/run/php-fpm-override.sock'
+        },
         common: {
-          docroot:              '/var/www'
+          docroot:              '/var/www',
+          modules:              ['actions', 'fastcgi']
         }
       },
       '14.04' => {
-        default: {},
-        override: {},
+        default: {
+          fpm_port:            '9000'
+        },
+        override: {
+          fpm_port:            '9001'
+        },
         common: {
-          docroot:              '/var/www/html'
+          docroot:              '/var/www/html',
+          modules:              ['actions', 'proxy', 'proxy_fcgi']
         }
       },
       common: {
@@ -54,12 +65,10 @@ def helper_data
         fpm_service_name:       'php5-fpm',
         apache2ctl:             '/usr/sbin/apache2ctl',
         default: {
-          default_pool:         '/etc/php5/fpm/pool.d/default.conf',
-          fpm_socket:           '/var/run/php-fpm-default.sock'
+          default_pool:         '/etc/php5/fpm/pool.d/default.conf'
         },
         override: {
-          default_pool:         '/etc/php5/fpm/pool.d/override.conf',
-          fpm_socket:           '/var/run/php-fpm-override.sock'
+          default_pool:         '/etc/php5/fpm/pool.d/override.conf'
         }
       }
     },

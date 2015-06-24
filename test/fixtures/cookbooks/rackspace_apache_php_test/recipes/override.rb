@@ -1,18 +1,30 @@
 # Testing cookbook
 # Test if the consumer can successfully overidde the default behaviour of our cookbook
+include_recipe 'chef-sugar'
 
 # Disable our php-nadler for Apache and our php-fpm pool
 node.default['rackspace_apache_php']['php_handler']['enable'] = false
 node.default['rackspace_apache_php']['php-fpm']['default_pool']['enable'] = false
 
-# Create a php-fpm pool through the attribute exposed from upstream
-node.default['php-fpm']['pools'] = {
-  override: {
-    enable: 'true',
-    process_manager: 'dynamic',
-    max_requests: 5000
+# Create a php-fpm pool through the attribute exposed from upstream , if we are on Trusty we use a TCP/IP socket
+if ubuntu_trusty?
+  node.default['php-fpm']['pools'] = {
+    override: {
+      enable: 'true',
+      listen: '127.0.0.1:9001',
+      process_manager: 'dynamic',
+      max_requests: 5000
+    }
   }
-}
+else
+  node.default['php-fpm']['pools'] = {
+    override: {
+      enable: 'true',
+      process_manager: 'dynamic',
+      max_requests: 5000
+    }
+  }
+end
 
 include_recipe 'rackspace_apache_php::default'
 
