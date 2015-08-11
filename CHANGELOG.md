@@ -1,6 +1,11 @@
 rackspace_apache_php CHANGELOG
 ==================
 
+0.2.1
+-----
+- Fix for Rubocop tests
+- Improvements on integration tests
+
 0.2.0
 -----
 - Added support for mod_proxy_fgi when using Apache 2.4
