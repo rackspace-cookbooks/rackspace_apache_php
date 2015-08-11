@@ -7,6 +7,7 @@ require 'platform_helper'
 require 'apache_helper'
 require 'php_fpm_helper'
 require 'php_helper'
+require 'page_returns'
 
 set :backend, :exec
 

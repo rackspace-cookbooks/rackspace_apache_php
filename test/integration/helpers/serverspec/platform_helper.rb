@@ -95,16 +95,3 @@ def get_helper_data_value(suite, attribute)
   # >Common>Attribute
   return helper_data[:common][attribute] unless helper_data[:common][attribute].nil?
 end
-
-def page_returns(url = 'http://localhost:80/', host = 'localhost', ssl = false)
-  uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
-  http.read_timeout = 70
-  if ssl
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-  end
-  req = Net::HTTP::Get.new(uri.request_uri)
-  req.initialize_http_header('Host' => host)
-  http.request(req).body
-end

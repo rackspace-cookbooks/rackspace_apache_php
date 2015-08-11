@@ -1,5 +1,5 @@
 shared_examples_for 'php under apache' do |version, suite|
-  describe command('wget -qO- localhost:80/phpinfo.php') do
+  describe page_returns('http://localhost/phpinfo.php') do
     index_php_path = "#{get_helper_data_value(suite, :docroot)}/phpinfo.php"
     before do
       File.open(index_php_path, 'w') { |file| file.write('<?php phpinfo(); ?>') }
@@ -8,9 +8,9 @@ shared_examples_for 'php under apache' do |version, suite|
       FPM\/FastCGI
     )
     phpinfo.each do |line|
-      its(:stdout) { should match(/#{line}/) }
+      its(:content) { should match(/#{line}/) }
     end
-    its(:stdout) { should match(/PHP Version #{version}/) }
+    its(:content) { should match(/PHP Version #{version}/) }
   end
 end
 
