@@ -1,4 +1,3 @@
-# rubocop:disable Documentation
 module Serverspec
   module Type
     class PageReturns < Base
@@ -33,4 +32,3 @@ module Serverspec
 end
 
 include Serverspec::Type
-# rubocop:enable Documentation
