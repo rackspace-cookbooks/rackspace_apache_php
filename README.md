@@ -9,7 +9,7 @@ You can disable the installation of php packages with `node['rackspace_apache_ph
 
 ## Supported Platforms
 
-* Centos 6.6
+* Centos 6.7
 * Ubuntu 12.04
 * Ubuntu 14.04 [(only PHP 5.5 and 5.6)](https://github.com/oerdnj/deb.sury.org/issues/58#issuecomment-92246112)
 
@@ -52,17 +52,17 @@ You can change any of the `apache2`,`php-fpm` and `php` cookbook attributes to t
 
 The goal of this library is to do the basic configuration to serve PHP pages through Apache. It will only configure `apache2` and the default php handler, users are free to configure their vhost if they need anything more specific.
 
-More in details it : 
+More in details it :
 
 * Installs and configure Apache2 web server
 * Installs and configure php-fpm
 * Installs and configure php
 * Configures Apache2 to serve php pages through php-fpm (in conf.d)
-* Gets the correct packages and change the configuration according to the php/apache version 
+* Gets the correct packages and change the configuration according to the php/apache version
 
 ## Out of scope
 
-Virtual Host are not managed by this cookbook, the configuration provided by this cookbook should not prevent users to extend php or php-fpm configuration. 
+Virtual Host are not managed by this cookbook, the configuration provided by this cookbook should not prevent users to extend php or php-fpm configuration.
 As many features as possible should have a flag to enable/disable them, it will allow to enjoy some parts of the work done by this cookbook (get the correct packages by example) but still be able to configure your own php-fpm pools.
 
 
@@ -99,7 +99,7 @@ node.default['php-fpm']['pools'] = {
 
 include_recipe 'rackspace_apache_php::default'
 
-# Create your own php-handler 
+# Create your own php-handler
 apache_conf 'my-php-handler' do
   source 'my-php-handler.conf.erb'
   cookbook 'my-cookbook'

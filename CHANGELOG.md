@@ -1,6 +1,11 @@
 rackspace_apache_php CHANGELOG
 ==================
 
+0.2.2
+-----
+- Unit test fixes
+- Support for CentOS 6.7 instead of 6.6
+
 0.2.1
 -----
 - Fix for Rubocop tests
