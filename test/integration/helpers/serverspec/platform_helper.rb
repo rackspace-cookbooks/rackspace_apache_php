@@ -13,7 +13,7 @@ def helper_data
 
   data = {
     redhat: {
-      '6.6' => {
+      '6.7' => {
         default: {
           default_pool:         '/etc/php-fpm.d/default.conf',
           fpm_socket:           '/var/run/php-fpm-default.sock'
