@@ -26,18 +26,6 @@ suites:
   - name: default_override
     run_list:
       - recipe[rackspace_apache_php_test::override]
-  - name: php54
-    run_list:
-      - recipe[rackspace_apache_php_test::default]
-    attributes:
-      rackspace_apache_php:
-        php_version: '5.4'
-  - name: php54_override
-    run_list:
-      - recipe[rackspace_apache_php_test::override]
-    attributes:
-      rackspace_apache_php:
-        php_version: '5.4'
   - name: php55
     run_list:
       - recipe[rackspace_apache_php_test::default]

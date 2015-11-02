@@ -68,14 +68,6 @@ shared_examples_for 'APT php repo' do |version|
   end
 end
 
-shared_examples_for 'PHP and PHP-fpm packages version 5.4 CENTOS' do
-  it 'installs the correct php and php-fpm packages' do
-    ['php54-devel', 'php54-cli', 'php54-pear', 'php54-fpm'].each do |pkg|
-      expect(chef_run).to install_package(pkg)
-    end
-  end
-end
-
 shared_examples_for 'PHP and PHP-fpm packages version 5.5 CENTOS' do
   it 'installs the correct php and php-fpm packages' do
     ['php55u-devel', 'php55u-cli', 'php55u-pear', 'php55u-fpm'].each do |pkg|
@@ -96,14 +88,6 @@ shared_examples_for 'PHP-fpm packages without PHP packages, version 5.6 CENTOS' 
   it 'installs the correct php and php-fpm packages' do
     expect(chef_run).to install_package('php56u-fpm')
     expect(chef_run).to_not install_package('php56u-pear')
-  end
-end
-
-shared_examples_for 'PHP and PHP-fpm packages version 5.4 UBUNTU' do
-  it 'installs the correct php and php-fpm packages' do
-    %w(php5-cgi php5 php5-dev php5-cli php-pear php5-fpm).each do |pkg|
-      expect(chef_run).to install_package(pkg)
-    end
   end
 end
 

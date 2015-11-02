@@ -5,6 +5,12 @@
 #
 # Copyright 2014, Rackspace
 #
+
+# We only support 5.5 and 5.6
+if node['rackspace_apache_php']['php_version'] != '5.5' && node['rackspace_apache_php']['php_version'] != '5.6'
+  Chef::Application.fatal!("PHP version #{node['rackspace_apache_php']['php_version']} is not supported")
+end
+
 include_recipe 'chef-sugar'
 
 # APACHE
@@ -28,11 +34,6 @@ end
 #
 php_fpm = {
   'rhel' => {
-    '5.4' => {
-      'php_packages' => ['php54-pear', 'php54-devel', 'php54-cli', 'php54-pear'],
-      'php_fpm_package' => 'php54-fpm',
-      'service' => 'php-fpm'
-    },
     '5.5' => {
       'php_packages' => ['php55u-pear', 'php55u-devel', 'php55u-cli', 'php55u-pear'],
       'php_fpm_package' => 'php55u-fpm',
@@ -45,12 +46,6 @@ php_fpm = {
     }
   },
   'debian' => {
-    '5.4' => {
-      'repo'    => 'http://ppa.launchpad.net/ondrej/php5-oldstable/ubuntu',
-      'php_packages' => ['php5-cgi', 'php5', 'php5-dev', 'php5-cli', 'php-pear'],
-      'php_fpm_package' => 'php5-fpm',
-      'service' => 'php5-fpm'
-    },
     '5.5' => {
       'repo'    => 'http://ppa.launchpad.net/ondrej/php5/ubuntu',
       'php_packages' => ['php5-cgi', 'php5', 'php5-dev', 'php5-cli', 'php-pear'],
@@ -87,11 +82,6 @@ elsif platform_family?('debian')
     pin          'release o=Ubuntu'
     pin_priority '600'
   end
-end
-
-# ondrej repos doesn't support PHP 5.4 on Trusty
-if ubuntu_trusty? && node['rackspace_apache_php']['php_version'] == '5.4'
-  Chef::Log.warn('PHP 5.4 is not supported on Ubuntu Trusty, the default Trusty PHP version will be installed')
 end
 
 # PHP-FPM

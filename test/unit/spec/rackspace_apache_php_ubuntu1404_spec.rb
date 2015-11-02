@@ -31,19 +31,6 @@ describe 'rackspace_apache_php_test::default on Ubuntu 14.04' do
     it_behaves_like 'PHP-fpm packages without PHP packages, version 5.6 UBUNTU'
   end
 
-  context 'PHP 5.4' do
-    cached(:chef_run) do
-      ChefSpec::SoloRunner.new(UBUNTU1404_SERVICE_OPTS) do |node|
-        node.set['rackspace_apache_php']['php_version'] = '5.4'
-      end.converge('rackspace_apache_php_test::default')
-    end
-    it_behaves_like 'Apache2', 'ubuntu', '14.04'
-    it_behaves_like 'Apache2 PHP handler', 'ubuntu', '2.4', 'default', '9000'
-    it_behaves_like 'PHP-FPM', 'ubuntu', 'default'
-    it_behaves_like 'APT php repo', 5.4
-    it_behaves_like 'PHP and PHP-fpm packages version 5.4 UBUNTU'
-  end
-
   context 'PHP 5.5' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(UBUNTU1404_SERVICE_OPTS) do |node|
