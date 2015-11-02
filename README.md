@@ -7,11 +7,20 @@ It relies on [apache2 cookbook](https://github.com/svanzoest-cookbooks/apache2/)
 In addition (even if this is not a requirement), the cookbook will install php packages through [PHP cookbook](https://github.com/opscode-cookbooks/php). Indeed most of the time you will need `php::default` in your role which will conflict with the `php-fpm` package if they are different.
 You can disable the installation of php packages with `node['rackspace_apache_php']['php_packages_install']['enable']`.
 
+## ***
+## NOTE: Support for PHP 5.4 was dropped in v1.0.0
+## ***
+
 ## Supported Platforms
 
 * Centos 6.7
 * Ubuntu 12.04
-* Ubuntu 14.04 [(only PHP 5.5 and 5.6)](https://github.com/oerdnj/deb.sury.org/issues/58#issuecomment-92246112)
+* Ubuntu 14.04
+
+## Supported PHP versions
+
+* 5.5
+* 5.6
 
 ## Attributes
 

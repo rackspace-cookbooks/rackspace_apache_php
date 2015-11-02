@@ -1,6 +1,12 @@
 rackspace_apache_php CHANGELOG
 ==================
 
+1.0.0
+-----
+- Release as v1.0.0
+- Dropped support for PHP 5.4
+- Updated unit tests
+
 0.2.2
 -----
 - Unit test fixes
