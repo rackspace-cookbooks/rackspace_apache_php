@@ -1,4 +1,4 @@
-# Desired PHP version
+# Desired PHP version - we support 5.5 and 5.6
 default['rackspace_apache_php']['php_version'] = '5.6'
 
 # Disable the default pool from upstream php-fpm.
