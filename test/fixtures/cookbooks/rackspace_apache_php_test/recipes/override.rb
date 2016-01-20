@@ -7,24 +7,22 @@ node.default['rackspace_apache_php']['php_handler']['enable'] = false
 node.default['rackspace_apache_php']['php-fpm']['default_pool']['enable'] = false
 
 # Create a php-fpm pool through the attribute exposed from upstream , if we are on Trusty we use a TCP/IP socket
-if ubuntu_trusty?
-  node.default['php-fpm']['pools'] = {
-    override: {
-      enable: 'true',
-      listen: '127.0.0.1:9001',
-      process_manager: 'dynamic',
-      max_requests: 5000
-    }
+node.default['php-fpm']['pools'] = {
+  override: {
+    enable: 'true',
+    listen: '127.0.0.1:9001',
+    process_manager: 'dynamic',
+    max_requests: 5000
   }
-else
-  node.default['php-fpm']['pools'] = {
-    override: {
-      enable: 'true',
-      process_manager: 'dynamic',
-      max_requests: 5000
-    }
+} if ubuntu_trusty?
+
+node.default['php-fpm']['pools'] = {
+  override: {
+    enable: 'true',
+    process_manager: 'dynamic',
+    max_requests: 5000
   }
-end
+} unless ubuntu_trusty?
 
 include_recipe 'rackspace_apache_php::default'
 
