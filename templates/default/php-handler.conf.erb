@@ -3,7 +3,11 @@
   AddHandler php5-fcgi .php
   Action php5-fcgi /php5-fcgi
   Alias /php5-fcgi /var/run/php5-fcgi
+<%   if node['rackspace_apache_php']['php_handler'].fetch('pass_auth_header',false) %>
+  FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-default.sock -flush -idle-timeout 1800 -pass-header Authorization
+<%   else %>
   FastCgiExternalServer /var/run/php5-fcgi -socket /var/run/php-fpm-default.sock -flush -idle-timeout 1800
+<%   end %>
 </IfModule>
 <% else %>
 <IfModule mod_proxy_fcgi.c>
