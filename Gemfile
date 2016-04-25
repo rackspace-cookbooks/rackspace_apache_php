@@ -26,6 +26,7 @@ group :kitchen_rackspace do
 end
 
 group :development do
+  gem 'listen', '~> 3.0'
   gem 'stove', '= 3.2.5'
   gem 'growl'
   gem 'rb-fsevent'
