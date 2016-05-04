@@ -13,3 +13,6 @@ default['rackspace_apache_php']['php-fpm']['default_pool']['enable'] = true
 
 # PHP packages (not PHP-FPM)
 default['rackspace_apache_php']['php_packages_install']['enable'] = true
+
+# Fastcgi Workaround
+default['apache']['mod_fastcgi']['download_url'] = 'http://d150860c924442f0c4ba-bb788a6a02be77ad65ac0686e629b047.r71.cf3.rackcdn.com/packages/fastcgi.tar.gz'
